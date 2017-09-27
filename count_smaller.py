@@ -14,6 +14,12 @@ def buildBST(nums):
         insertBST(root,nums[i],i)
     return root
 
+def buildBST2(nums,ret):
+    root = TreeNode(nums[0],0)
+    for i in range(1,len(nums)):
+        insertBST2(root,nums[i],i,ret)
+    return root
+
 def insertBST(root,x,i):
     if not root:
         root = TreeNode(x,i)
@@ -36,6 +42,29 @@ def insertBST(root,x,i):
             return
         return insertBST(root.left,x,i)
 
+def insertBST2(root,x,i,ret):
+    if not root:
+        root = TreeNode(x,i)
+        return
+    if x > root.val:
+        if not root.right:
+            root.right = TreeNode(x,i)
+            return
+        return insertBST2(root.right,x,i,ret)
+    elif x == root.val:
+        if not root.right:
+            root.right = TreeNode(x,i)
+            return
+        return insertBST2(root.right,x,i,ret)
+    else:
+        root.smaller += 1
+        ret[root.index] += 1
+        incrAll2(root.right,ret)
+        if not root.left:
+            root.left = TreeNode(x,i)
+            return
+        return insertBST2(root.left,x,i,ret)
+
 def incrAll(root):
     if not root: return None
     root.smaller += 1
@@ -43,6 +72,15 @@ def incrAll(root):
         incrAll(root.left)
     if root.right:
         incrAll(root.right)
+
+def incrAll2(root,ret):
+    if not root: return None
+    root.smaller += 1
+    ret[root.index] += 1
+    if root.left:
+        incrAll2(root.left,ret)
+    if root.right:
+        incrAll2(root.right,ret)
 
 def BSTgetNode(root,x,i):
     if not root: return None
@@ -95,19 +133,21 @@ def countSmaller(nums):
     :type nums: List[int]
     :rtype: List[int]
     """
-    util_tree = buildBST(nums)
-    print(nums)
-    p.pprint(preorder_iterative(util_tree))
+    # util_tree = buildBST(nums)
+    # print(nums)
+    # p.pprint(preorder_iterative(util_tree))
     retlist = [0 for _ in range(len(nums))]
-    for i in range(len(nums)):
-        # print(nums[i])
-        node = BSTgetNode(util_tree,nums[i],i)
-        if not node:
-            sml = -1
-        else:
-            sml = node.smaller
-        retlist[i] = sml
-        # print(retlist)
+    util_tree = buildBST2(nums,retlist)
+
+    # for i in range(len(nums)):
+    #     # print(nums[i])
+    #     node = BSTgetNode(util_tree,nums[i],i)
+    #     if not node:
+    #         sml = -1
+    #     else:
+    #         sml = node.smaller
+    #     retlist[i] = sml
+    #     # print(retlist)
     return retlist
 
 def findDups(nums):
