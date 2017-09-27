@@ -1,6 +1,7 @@
 # trapping_water.py
 import functools
 import queue
+import pprint as p
 
 @functools.total_ordering
 class Square(object):
@@ -33,4 +34,6 @@ for i,row in enumerate(test):
 	for j,h in enumerate(row):
 		lonqu.put(Square(h,i,j))
 
-print([sq.__str__() for sq in lonqu.queue])
+# p.pprint([str(sq) for sq in lonqu.queue])
+while lonqu.queue:
+	print(str(lonqu.get()))
