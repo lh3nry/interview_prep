@@ -4,6 +4,30 @@ import queue
 import pprint as p
 from enum import Enum
 
+def trap2d(height):
+    """
+    :type height: List[int]
+    :rtype: int
+    """
+    left, right = 0, len(height) - 1
+    units = 0
+    left_max = right_max = 0
+    while left < right:
+        if height[left] < height[right]:
+            if height[left] >= left_max: 
+                left_max = height[left]
+            else:
+                units += left_max - height[left]
+            left += 1
+        else:
+            if height[right] >= right_max:
+                right_max = height[right]
+            else: 
+                units += right_max - height[right]
+            right -= 1
+            
+    return units
+
 class State(Enum):
 	VISITED = 1
 	VISITING = 2
@@ -76,6 +100,7 @@ def trapping_water(heightMap):
 	printPQueue(q)
 
 
+print(trap2d([0,1,0,2,1,0,1,3,2,1,2,1]))
 
 
 
