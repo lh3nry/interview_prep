@@ -2,38 +2,99 @@
 import functools
 import queue
 import pprint as p
+from enum import Enum
+
+class State(Enum):
+	VISITED = 1
+	VISITING = 2
+	UNVISITED = 3
 
 @functools.total_ordering
 class Square(object):
-	def __init__(self, height,i,j):
+	def __init__(self, height,i,j, v):
 		self.height = height
 		self.row = i
 		self.col = j
+		self.state = v
+		# self.visited = False
 
 	# def __eq__(self, other):
 	def __lt__(self, other):
 		return self.height < other.height
 
 	def __str__(self):
-		return 'height: ' + str(self.height) + ' at: (' + str(self.row) + ',' + str(self.col) + ')'
+		return 'height: ' + str(self.height) + ' at: (' + str(self.row) + ',' + str(self.col) + '), ' + str(self.state)
+
+def printPQueue(pq):		# not in priority ordering
+	p.pprint([str(sq) for sq in pq.queue])
+
+def initQueue(map,pq):		# inserts border of map into queue
+	rows = len(map)
+	cols = len(map[0])
+	# enqueue map border
+	for i,h in enumerate(map[0]):
+		# print(h)
+		pq.put(Square(h,0,i,State.VISITING))
+	for i,h in enumerate(map[rows-1]):
+		pq.put(Square(h,0,i,State.VISITING))
+
+	for i in range(1,rows-1):
+		for j in [0,cols-1]:
+			# print(i,j)
+			pq.put(Square(map[i][j],i,j,State.VISITING))
+
+def checkNeighbours(pq,sq,map):
+	n, m = len(map), len(map[0])
+	r, c = sq.row, sq.col
+	# up
+	if r > 0:
+		pq.put(Square(map[r-1][c],r-1,c,State.VISITING))
+	# down
+	if r < n:
+		pq.put(Square(map[r+1][c],r+1,c,State.VISITING))
+	# left
+	if c > 0:
+		pq.put(Square(map[r][c-1],r,c-1,State.VISITING))
+	# right
+	if c < m:
+		pq.put(Square(map[r][c+1],r,c+1,State.VISITING))
+	sq.state = State.VISITED
+
+def trapping_water(heightMap):
+	q = queue.PriorityQueue()
+
+	rows = len(heightMap)
+	cols = len(heightMap[0])
+	
+	hmax = 0
+	# enqueue map border
+	initQueue(heightMap,q)
+
+	# while q.queue:
+
+
+	printPQueue(q)
 
 
 
-# def trapping_water()
 
 
 test = [ [1,4,3,1,3,2],
 		 [3,2,1,3,2,4],
 		 [2,3,3,2,3,1]
 		]
-sol = 12
+sol = 4
 
-lonqu = queue.PriorityQueue()
+trapping_water(test)
 
-for i,row in enumerate(test):
-	for j,h in enumerate(row):
-		lonqu.put(Square(h,i,j))
+# print(list(enumerate(test[0]))+list(enumerate(test[2])))
 
-# p.pprint([str(sq) for sq in lonqu.queue])
-while lonqu.queue:
-	print(str(lonqu.get()))
+# lonqu = queue.PriorityQueue()
+
+# for i,row in enumerate(test):
+# 	for j,h in enumerate(row):
+# 		lonqu.put(Square(h,i,j))
+
+# # p.pprint([str(sq) for sq in lonqu.queue])
+# while lonqu.queue:
+# 	print(str(lonqu.get()))

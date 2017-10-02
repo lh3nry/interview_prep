@@ -70,11 +70,27 @@ class SinglyLinkedList:
         curr.next = prev
         self.head = curr
 
+    def reverse3(self):
+        c = self.head
+        p = None
+
+        while c:
+            n = c.next
+            c.next = p # flip pointer
+
+            # advance
+            p = c
+            c = n
+        # p is the only pointer NOT None after while loop terminates
+        self.head = p
+
     def print(self):
         node = self.head
+        s = []
         while node:
-            print(node.data)
+            s.append(node.data)
             node = node.next
+        print(s)
 
     def insertHead(self,node):
         if not self.head:
@@ -127,32 +143,67 @@ class SinglyLinkedList:
             # advance current pointer
             cur = next_temp
 
+    def count_palindrome(self,left,right):
+        count = 0
+        while left and right:
+            if left.data == right.data:
+                count+=1
+                left,right = left.next,right.next
+            else:
+                break
+        return 2*count
 
 
-list1 = SinglyLinkedList(Node(5))
+    def longest_palindrome(self):
+        maxpal = 0
+        p, c = None, self.head
+
+        while c:
+            n = c.next
+            c.next = p
+
+            maxpal = max(maxpal, self.count_palindrome(p,n) + 1)
+            maxpal = max(maxpal, self.count_palindrome(c,n) + 1)
+
+            p = c
+            c = n
+
+        self.head = p
+        return maxpal
+
+
+
+
+
+# list1 = SinglyLinkedList(Node(5))
+list1 = SinglyLinkedList(None)
 # node = list1.head
 # node.next = Node(4)
 # node.next.next = Node(3)
 # node.next.next.next = Node(2)
 # node.next.next.next.next = Node(1)
 # nxt = list1.next
-for i in range(4,0,-1):
+
+# for i in range(4,0,-1):
+for i in [14,12,2,3,7,3,2]:
     # print(i)
     list1.insertHead(Node(i))
     # nxt = new
     # nxt = new.next
 list1.print()
 
+print(list1.longest_palindrome())
+
 # node = list1.head
 # while node:
 #     print(node.data)
 #     node = node.next
 
-# list1.reverse()
-# list1.print()
+list1.reverse3()
+list1.print()
 # list1.reverse2()
 # list1.print()
 
-list1.arrange_in_pairs()
-list1.print()
+# list1.arrange_in_pairs()
+# list1.print()
 
