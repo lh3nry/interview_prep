@@ -138,13 +138,14 @@ def canFinish(numCourses, prerequisites):
     		if G[r][0] == set():
     			q.append(r)
 
-    # print(v)
+    print(v)
 
     return len(v) == numCourses
 
 print("test course prerequisites")
 print(canFinish(3,[[2,1],[1,0]]))
 print(canFinish(2,[[0,1],[1,0]]))
+print(canFinish(4, [[1,0],[2,0],[3,1],[3,2]]))
 
 
 
