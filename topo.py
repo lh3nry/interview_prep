@@ -56,9 +56,6 @@ def topological(projects, deps):
 	return V
 
 
-
-
-
 projects = ['a',
 			'b',
 			'c',
@@ -77,7 +74,7 @@ deps = [ ('f','a'),
 		 ('d','g')
 		 ]
 
-
+print("test project build order")
 print(topological(projects,deps))
 
 deps = [ ('f','a'),
@@ -92,3 +89,62 @@ deps = [ ('f','a'),
 		 ]
 
 print(topological(projects,deps))
+
+
+def canFinish(numCourses, prerequisites):
+    """
+    :type numCourses: int
+    :type prerequisites: List[List[int]]
+    :rtype: bool
+    """
+    G = dict()
+    q = []	# queue
+    v = []	# "visited" nodes
+
+    # initialize the graph data structure
+    for i in range(numCourses):
+        G[i] = (set(),set())
+        
+    # populate edges
+    for c,p in prerequisites:
+        # print(c,p)
+        G[c][0].add(p)
+        G[p][1].add(c)
+        
+    # print(G)
+
+    # insert all zero-dependency courses into the queue
+    for course,edges in G.items():
+    	# print(course,edges)
+    	if edges[0] == set():
+    		q.append(course)
+
+    # print(q)
+
+    while q:
+    	# pop head of queue
+    	c = q.pop(0)
+    	# if it was in the queue, then it's safe to "visit"
+    	v.append(c)
+    	# check whether other courses depend on c
+    	reqs = G[c][1]
+
+    	for r in reqs:
+    		temp = set()
+    		temp.add(c)
+    		# only the outgoing edges will be updated
+    		G[r] = (G[r][0] - temp,G[r][1])
+    		# check if r now has no pre-reqs
+    		if G[r][0] == set():
+    			q.append(r)
+
+    # print(v)
+
+    return len(v) == numCourses
+
+print("test course prerequisites")
+print(canFinish(3,[[2,1],[1,0]]))
+print(canFinish(2,[[0,1],[1,0]]))
+
+
+
