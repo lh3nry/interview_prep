@@ -15,6 +15,8 @@ def rangesearch(nums,target):
 	# check if the target was found at all
 	if nums[left] != target:
 		return [-1,-1]
+
+	# reset hi
 	hi = len(nums)-1
 
 	# search for right index
@@ -26,7 +28,7 @@ def rangesearch(nums,target):
 			hi = mi
 
 
-	if lo < 1:
+	if nums[lo] == target:
 		right = lo
 	else:
 		right = lo-1
