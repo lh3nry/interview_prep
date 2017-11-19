@@ -146,6 +146,9 @@ print("test course prerequisites")
 print(canFinish(3,[[2,1],[1,0]]))
 print(canFinish(2,[[0,1],[1,0]]))
 print(canFinish(4, [[1,0],[2,0],[3,1],[3,2]]))
+print(canFinish(4, [[1,0],[2,1],[3,2],[1,3]]))	# can't finish?
+
+
 
 
 
