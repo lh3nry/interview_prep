@@ -29,12 +29,9 @@ def letterCombinations(digits):
 			for ch in charFromNumber(int(d)):
 				# print(ch)
 				for sub in ans:
-					# tmp.append(ch)
 					tmp.append(ch+sub)
 					# print(tmp)
 			ans = tmp
-		# print(charFromNumber(int(d)))
-		# print(ans)
 	return ans
 
 # print(charFromNumber(2))
