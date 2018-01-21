@@ -20,21 +20,24 @@ def reorganizeString(S):
     new = [hist_s[0][0]] * hist_s[0][1]
     hist_s.pop(0)
     # print(hist_s)
-    pos,ind = 1,0
+    pos,pos_pre,ind = 1,1,0
 
     while hist_s:
-        ind=(ind+1)%len(hist_s)
+        # ind=(ind+1)%len(hist_s)
         # print(len(hist_s),ind)
         char,count = hist_s[ind][0],hist_s[ind][1]
         for i in range(count):
             new = new[:pos] + [char] + new[pos:]
             pos+=2
         hist_s.remove((char,count))
-        pos = 1
+        print("".join(new),hist_s)
+        pos = pos_pre + 2*count
+        pos_pre = pos
         # print(new,hist_s)
     return "".join(new)
 
 
 
 
-print(reorganizeString('aaabbccc'))
+# print(reorganizeString('aaabbccc'))
+print(reorganizeString("todrnphcamnomskfrhe"))
